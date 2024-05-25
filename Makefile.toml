@@ -7,13 +7,6 @@ skip_core_tasks = true
 # all features except the backend ones
 ALL_FEATURES = "all-widgets,macros,serde"
 
-[env.ALL_FEATURES_FLAG]
-# Windows does not support building termion, so this avoids the build failure by providing two
-# sets of flags, one for Windows and one for other platforms.
-source = "${CARGO_MAKE_RUST_TARGET_OS}"
-default_value = "--features=all-widgets,macros,serde,crossterm,termion,termwiz,underline-color,unstable"
-mapping = { "windows" = "--features=all-widgets,macros,serde,crossterm,termwiz,underline-color,unstable" }
-
 [tasks.default]
 alias = "ci"
 
@@ -49,7 +42,7 @@ command = "cargo"
 args = [
   "rustdoc",
   "--no-default-features",
-  "${ALL_FEATURES_FLAG}",
+  "--all-features",
   "--",
   "-Zunstable-options",
   "--check",
@@ -63,7 +56,7 @@ args = [
   "check",
   "--all-targets",
   "--no-default-features",
-  "${ALL_FEATURES_FLAG}",
+  "--all-features",
 ]
 
 [tasks.build]
@@ -73,7 +66,7 @@ args = [
   "build",
   "--all-targets",
   "--no-default-features",
-  "${ALL_FEATURES_FLAG}",
+  "--all-features",
 ]
 
 [tasks.clippy]
@@ -85,7 +78,7 @@ args = [
   "--tests",
   "--benches",
   "--no-default-features",
-  "${ALL_FEATURES_FLAG}",
+  "--all-features",
   "--",
   "-D",
   "warnings",
@@ -108,13 +101,13 @@ args = [
   "run",
   "--all-targets",
   "--no-default-features",
-  "${ALL_FEATURES_FLAG}",
+  "--all-features",
 ]
 
 [tasks.test-doc]
 description = "Run documentation tests"
 command = "cargo"
-args = ["test", "--doc", "--no-default-features", "${ALL_FEATURES_FLAG}"]
+args = ["test", "--doc", "--no-default-features", "--all-features"]
 
 [tasks.test-backend]
 # takes a command line parameter to specify the backend to test (e.g. "crossterm")
@@ -139,7 +132,7 @@ args = [
   "--output-path",
   "target/lcov.info",
   "--no-default-features",
-  "${ALL_FEATURES_FLAG}",
+  "--all-features",
 ]
 
 [tasks.run-example]
